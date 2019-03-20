@@ -5,7 +5,6 @@ import (
 	"flag"
 	"fmt"
 	_ "github.com/go-sql-driver/mysql"
-	"github.com/golang/glog"
 	_ "image/gif"
 	_ "image/jpeg"
 	_ "image/png"
@@ -31,12 +30,10 @@ const hextable = "0123456789abcdef"
 func main() {
 	flag.Set("logtostderr", "true")
 	flag.Parse()
-	var none interface{}
-	name := "123 '123' \r dfdfd"
-	none = name
-	if v,ok:=none.(string);ok{
-		glog.Info(v)
-	}
+	ss := "abc"
+
+	rr := []rune(ss)
+	fmt.Println(rr)
 }
 
 func InputLoop() {
