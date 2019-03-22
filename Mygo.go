@@ -5,12 +5,14 @@ import (
 	"flag"
 	"fmt"
 	_ "github.com/go-sql-driver/mysql"
+	"github.com/golang/glog"
 	_ "image/gif"
 	_ "image/jpeg"
 	_ "image/png"
 	"net"
 	"os"
 	"reflect"
+	"strings"
 	"time"
 )
 
@@ -30,10 +32,13 @@ const hextable = "0123456789abcdef"
 func main() {
 	flag.Set("logtostderr", "true")
 	flag.Parse()
-	ss := "abc"
 
-	rr := []rune(ss)
-	fmt.Println(rr)
+	dv:=[]int{1,24,5}
+	dv=append(dv[:1],dv[2:]...)
+	glog.Info(dv)
+	ss:= strings.Builder{}
+	ss.
+
 }
 
 func InputLoop() {
