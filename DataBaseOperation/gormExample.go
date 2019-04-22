@@ -92,10 +92,7 @@ func Webapp(db *gorm.DB) {
 	var num int
 	//db.Table("oauths").Where("user_id = ? and delete_at not null ", "1fcf019ec96c4ba1ac88bfc408febd97").Count(&num)
 
-	db.Where("owner_id = ?", "63a40b5f320f44ccb6639a44b0ce8232").Find(&containerMembers)
-	for _, v := range projectMembers {
-		fmt.Println(v)
-	}
+	db.Table("files").Offset(0).Limit(-1).Count(&num)
 	fmt.Println(num)
 }
 func FuncUser(db *gorm.DB) {
