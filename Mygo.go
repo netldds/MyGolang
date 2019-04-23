@@ -2,16 +2,13 @@ package main
 
 import (
 	"bufio"
-	"bytes"
 	"flag"
 	"fmt"
 	_ "github.com/go-sql-driver/mysql"
-	"github.com/golang/glog"
 	_ "image/gif"
 	_ "image/jpeg"
 	_ "image/png"
 	"net"
-	"net/http"
 	"os"
 	"reflect"
 	"time"
@@ -44,11 +41,7 @@ type Body struct {
 func main() {
 	flag.Set("logtostderr", "true")
 	flag.Parse()
-	data:="xxx"
-	body:=bytes.NewBufferString(data)
-	req,err:=http.NewRequest("GET","http://www.baidu.com",body)
-	resp,err:=http.DefaultClient.Do(req)
-	glog.Info(resp,err)
+
 }
 
 func InputLoop() {
