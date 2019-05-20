@@ -88,12 +88,22 @@ func Webapp(db *gorm.DB) {
 
 	//db.Raw("(select *,'1' lvl  from containers where containers.name = ?) UNION  (select *,'2' lvl  from containers where containers.name LIKE ?) UNION  (select *,'3' lvl  from containers where containers.name LIKE ?) ORDER BY lvl", "女一号", "女一号_%","%_女一号_%").Scan(&containers)
 
-	//fmt.Println(containers)
-	var num int
+	//var num int
 	//db.Table("oauths").Where("user_id = ? and delete_at not null ", "1fcf019ec96c4ba1ac88bfc408febd97").Count(&num)
 
-	db.Table("files").Offset(0).Limit(-1).Count(&num)
-	fmt.Println(num)
+	//body := []struct {
+	//	Date time.Time
+	//	Count int
+	//}{}
+	//err:= db.Table("files").Limit(-1).Select("DATE(created_at)as date ,count(*) count").Group("DATE(created_at)").Where("created_at > ? AND created_at < ? AND parent_path like ?","2019-01-10","2019-05-16","%"+""+"%").Scan(&body).Error
+	//fmt.Println(err)
+	//fmt.Println(body)
+
+	var fileSizes int64
+	var count int
+	db.Table("raw_files").Select("sum(size),count(*)").Where("container_id = ?", "8637c3f6270c48a2a7b8289d6ca4fe7d").Order("size DESC").Row().Scan(&fileSizes,&count)
+	fmt.Println(fileSizes)
+
 }
 func FuncUser(db *gorm.DB) {
 	//db.Table("container_members").Where("container_id =? and member_type =?", "4fc637a53d2242fdbfed3e3195906175", 2).Not("deleted_at", nil).Find(&containerMembers)

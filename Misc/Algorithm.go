@@ -87,3 +87,45 @@ func partition(a []int, low int, high int) int {
 	a[low], a[m] = a[m], a[low]
 	return m
 }
+
+type Body struct {
+	Value int
+	Name  string
+}
+type Bodys struct {
+	bodys []Body
+	Flag  bool
+}
+
+func (b *Bodys) Sort() {
+	b.quickSort(0, len(b.bodys))
+
+}
+func (b *Bodys) quickSort(low, height int) {
+	if low < height {
+		pivot := b.pivot(low, height)
+		b.quickSort(low, pivot)
+		b.quickSort(pivot+1, height)
+	}
+
+}
+func (b *Bodys) pivot(low, high int) int {
+	pivotValue := b.bodys[low].Value
+	pivot := low
+	for i := low + 1; i < high; i++ {
+		if b.Flag {
+			if b.bodys[i].Value < pivotValue {
+				pivot++
+				b.bodys[i], b.bodys[pivot] = b.bodys[pivot], b.bodys[i]
+			}
+		} else {
+			if b.bodys[i].Value > pivotValue {
+				pivot++
+				b.bodys[i], b.bodys[pivot] = b.bodys[pivot], b.bodys[i]
+			}
+		}
+	}
+	b.bodys[low], b.bodys[pivot] = b.bodys[pivot], b.bodys[low]
+	return pivot
+
+}

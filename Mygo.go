@@ -34,13 +34,13 @@ const (
 	UnavailableStatus = -1
 )
 
-type Body struct {
-	Name []string
-}
-
 func main() {
 	flag.Set("logtostderr", "true")
 	flag.Parse()
+
+	if UnavailableStatus & BothStatus ==ChildStatus{
+		fmt.Println("ok")
+	}
 
 }
 
