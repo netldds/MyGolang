@@ -1,6 +1,7 @@
 package main
 
 import (
+	"MyGolang/DataBaseOperation"
 	"bufio"
 	"flag"
 	"fmt"
@@ -34,13 +35,16 @@ const (
 	UnavailableStatus = -1
 )
 
+type Item struct {
+	Value int
+}
+
 func main() {
 	flag.Set("logtostderr", "true")
 	flag.Parse()
+	DataBaseOperation.RungOrm()
 
-	if UnavailableStatus & BothStatus ==ChildStatus{
-		fmt.Println("ok")
-	}
+
 
 }
 
