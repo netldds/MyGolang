@@ -15,11 +15,11 @@ func algorithmStart(name string) {
 	}
 	switch name {
 	case "QuickSort":
-		Misc.QuickSort(a, 0, len(a)-1)
+		QuickSort(a, 0, len(a)-1)
 		fmt.Printf("Sorted array is :%v\n", a)
 
 	case "MergeSort":
-		Misc.MergeSort(a, 0, len(a)-1)
+		MergeSort(a, 0, len(a)-1)
 		fmt.Printf("Sorted array is :%v\n", a)
 
 	default:

@@ -1,4 +1,4 @@
-package main
+package Misc
 
 import (
 	"flag"
@@ -12,7 +12,7 @@ import (
 const iFile = "/home/dx/bts.mp4"
 
 //获取视频码率
-func main() {
+func Start() {
 	flag.Set("logtostderr", "true")
 	flag.Parse()
 	transcode()

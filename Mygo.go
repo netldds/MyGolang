@@ -1,7 +1,7 @@
 package main
 
 import (
-	"MyGolang/DataBaseOperation"
+	"MyGolang/Misc"
 	"bufio"
 	"flag"
 	"fmt"
@@ -26,14 +26,6 @@ const (
 var counterPool = make(map[string]time.Time)
 
 const rootpath = "/home/dx/GoWorkBench/src/dx/taishan/data/comment_files"
-const hextable = "0123456789abcdef"
-
-const (
-	ChildStatus = 1 << (32 - 1 - iota)
-	MasterStatus
-	BothStatus        = ChildStatus | MasterStatus
-	UnavailableStatus = -1
-)
 
 type Item struct {
 	Value int
@@ -42,9 +34,7 @@ type Item struct {
 func main() {
 	flag.Set("logtostderr", "true")
 	flag.Parse()
-	DataBaseOperation.RungOrm()
-
-
+	Misc.ToHex()
 
 }
 
