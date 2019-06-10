@@ -192,3 +192,19 @@ type ProjectMember struct {
 }
 var projectMember ProjectMember
 var projectMembers []ProjectMember
+
+type SharedResources struct {
+	db.Model
+	ShortUrl     string `json:"short_url" db:"short_url"`
+	CreatorId    string `json:"creator_id" db:"creator_id"`
+	ContainerId  string `json:"container_id" db:"container_id"`
+	FileId       string `json:"file_id" db:"file_id"`
+	RawFileId    string `json:"raw_file_id" db:"raw_file_id"`
+	Status       int    `json:"status" db:"status"`
+	DistrictType string `json:"district_type" db:"district_type"`
+	Expiration   int    `json:"expiration" db:"expiration"` //单位：天,-1=永久
+	Code         string `json:"code" db:"code"`
+	BrowseTime   int    `json:"browse_time" db:"browse_time"`
+	Behavior     int8   `json:"behavior" db:"behavior"`
+}
+var sharedResources []SharedResources

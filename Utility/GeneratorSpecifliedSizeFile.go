@@ -22,7 +22,7 @@ xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
 const fileName2G = "2G.bin"
 const fileName1G = "1G.bin"
-const fileName500M = "500M.bin"
+const fileName500M = "500MB.bin"
 
 func main() {
 	flag.Set("logtostderr", "true")

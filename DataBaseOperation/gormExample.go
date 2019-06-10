@@ -21,19 +21,17 @@ type RawFile struct {
 	Status      int    `json:"status" db:"status"`
 }
 
-
 func RungOrm() {
 
 	//var CMdata []ContainerMember
 	//var RAWfiles []RawFile
 	//userId := "2fd8584564ad47798ac4d23cf4a03ea1"
-	db, err := gorm.Open("mysql", "root:123@/taishan_dev4?charset=utf8&parseTime=True&loc=Local")
+	db, err := gorm.Open("mysql", "root:123@tcp(192.168.99.102:3306)/taishan_dev?charset=utf8&parseTime=True&loc=Local")
 	if err != nil {
 		fmt.Println(err)
 	}
 
 	Webapp(db)
-	//fmt.Println(time.Now())
 }
 func Webapp(db *gorm.DB) {
 	//timestampv := time.Now().Local().Format("2006-01-02 15:04:05")
@@ -53,6 +51,22 @@ func Webapp(db *gorm.DB) {
 	//err:= db.Table("files").Limit(-1).Select("DATE(created_at)as date ,count(*) count").Group("DATE(created_at)").Where("created_at > ? AND created_at < ? AND parent_path like ?","2019-01-10","2019-05-16","%"+""+"%").Scan(&body).Error
 	//fmt.Println(err)
 	//fmt.Println(body)
+	db.Find(&sharedResources)
+	nmap := make(map[string]int)
+	chanUrl := make(chan string)
+	for _, v := range sharedResources {
+		go func() {
+			//var value string
+			//db.Table("shared_resources").Select("district_type").Where("id = ?", v.Id).Row().Scan(&value)
+			fmt.Println(v.DistrictType)
+			chanUrl <- "gg"
+		}()
+	}
+	for i := 0; i < len(sharedResources); i++ {
+		nmap[<-chanUrl] += 1
+	}
+	fmt.Println(nmap)
+
 }
 func FuncUser(db *gorm.DB) {
 	//db.Table("container_members").Where("container_id =? and member_type =?", "4fc637a53d2242fdbfed3e3195906175", 2).Not("deleted_at", nil).Find(&containerMembers)
@@ -117,11 +131,4 @@ func FuncUser(db *gorm.DB) {
 	//err = db.Table("user_profiles").Where("user_id in (?)", "dbd09cf3d711455d8c69421225d5eb2b").Find(&result2).Error
 	fmt.Println(result)
 
-	//p := fmt.Println
-	//p(result[0].Name)
-	//p(result[0].Id)
-	//p(result[0].Avatar)
-	//p(result[0].Email)
-	//p(result[0].CompanyId)
-	//p(result[0].Status)
 }
