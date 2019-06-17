@@ -9,6 +9,7 @@ import (
 	"net/rpc"
 	"net/rpc/jsonrpc"
 	"os"
+	"time"
 )
 
 func Checkerr(e error) {
@@ -92,4 +93,45 @@ func handleConnection(conn net.Conn) {
 	//	fmt.Println(scanner.Text())
 	//}
 
+}
+func tcp_test() {
+	//server
+	go func() {
+		net, _ := net.Listen("tcp", ":6666")
+		fmt.Println(net.Addr())
+		for {
+			conn, err := net.Accept()
+			fmt.Println(" server conn accepted")
+			if err != nil {
+				fmt.Println(err)
+				continue
+			}
+			go func() {
+				rd := bufio.NewReader(conn)
+				fmt.Printf("server local addr  %v, server remote addr %v \n", conn.LocalAddr(), conn.RemoteAddr())
+				for {
+					bs := make([]byte, 1024)
+					n, err := rd.Read(bs)
+					if err != nil {
+						fmt.Println(err)
+						break
+					}
+					fmt.Println(string(bs[:n]))
+				}
+			}()
+		}
+	}()
+	//client
+	time.Sleep(time.Second)
+	addr, _ := net.ResolveTCPAddr("tcp", "127.0.0.1:6666")
+	conn, _ := net.DialTCP("tcp", nil, addr)
+	fmt.Printf("client local addr %v , client remote addr %v \n ", conn.LocalAddr(), conn.RemoteAddr())
+	var count int
+	for {
+		n, err := conn.Write([]byte("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\n"))
+		count += n
+		fmt.Printf("write %v bytes,err :%v,count:%v \n", n, err, count)
+		time.Sleep(time.Second)
+	}
+	select {}
 }
