@@ -22,7 +22,7 @@ xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
 const fileName2G = "2G.bin"
 const fileName1G = "1G.bin"
-const fileName500M = "500M.bin"
+const fileName500M = "500MB.bin"
 
 func main() {
 	flag.Set("logtostderr", "true")
@@ -33,7 +33,7 @@ func main() {
 	if err != nil {
 		glog.Errorln(err)
 	}
-	data:=[]byte(OneKB)
+	data := []byte(OneKB)
 	glog.Info(len(data))
 	for i := 0; i < 1024/2; i++ {
 		for i := 0; i < 1024; i++ {

@@ -44,3 +44,16 @@ func createQuery(q interface{}) {
 		fmt.Println(query)
 	}
 }
+func reflect_example() {
+	method := func(i string) map[string]string {
+		fmt.Println(i)
+		return map[string]string{"id": "id1"}
+	}
+	var v reflect.Value
+
+	v = reflect.ValueOf(method)
+	vs := []reflect.Value{reflect.ValueOf("myStrings")}
+	rvs := v.Call(vs)
+	res := rvs[0].MapIndex(reflect.ValueOf("id")).String()
+	fmt.Println(res)
+}
