@@ -94,6 +94,7 @@ func RecursiveFolder(folerPath, recycleId string, db *gorm.DB) (err error) {
 		glog.Info(err)
 		return
 	}
+	glog.Infof("folder %v has been updated\n",folerPath)
 	//找当前文件夹下的文件，更新状态
 	var filesId []string
 	err = db.Table("files").Where("parent_path = ? and  (recycle_id ='' or recycle_id is null ) and deleted_at is null  ", folerPath).Pluck("id", &filesId).Update(map[string]interface{}{"recycle_id": recycleId, "status": -1, "deleted_at": time.Now()}).Error
@@ -111,5 +112,6 @@ func RecursiveFolder(folerPath, recycleId string, db *gorm.DB) (err error) {
 		glog.Info(err)
 		return
 	}
+	glog.Infof("files id %v has been updated\n",filesId)
 	return nil
 }
