@@ -6,8 +6,8 @@ import "fmt"
 
 func main() {
 
-	num:=10
-	added:=C.add(num,2)
+	num := 10
+	added := C.add(num, 2)
 	fmt.Println(added)
 
 }

@@ -2,11 +2,11 @@ package Misc
 
 import (
 	"flag"
-	"github.com/codeskyblue/go-sh"
-	"github.com/golang/glog"
-	"gopkg.in/ini.v1"
 	"path/filepath"
 	"strings"
+
+	sh "github.com/codeskyblue/go-sh"
+	"github.com/golang/glog"
 )
 
 const iFile = "/home/dx/bts.mp4"

@@ -33,7 +33,7 @@ func main() {
 	if err != nil {
 		glog.Errorln(err)
 	}
-	data:=[]byte(OneKB)
+	data := []byte(OneKB)
 	glog.Info(len(data))
 	for i := 0; i < 1024/2; i++ {
 		for i := 0; i < 1024; i++ {

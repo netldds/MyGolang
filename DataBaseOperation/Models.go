@@ -2,9 +2,9 @@ package DataBaseOperation
 
 import (
 	"dx/taishan/core/db"
+	"dx/taishan/core/rbac"
 	"dx/taishan/modules/user/models"
 	"time"
-	"dx/taishan/core/rbac"
 )
 
 type FileStruct struct {
@@ -158,6 +158,7 @@ type Container struct {
 }
 
 var containers []Container
+
 type ProjectMemberGroup struct {
 	db.Model
 	Name        string `json:"name" form:"name"`
@@ -190,6 +191,7 @@ type ProjectMember struct {
 	ProjectMemberGroups []ProjectMemberGroup `json:"project_member_groups" gorm:"many2many:project_member_member_groups;ForeignKey:member_id;AssociationForeignKey:group_id"`
 	Roles               []MemberRole         `json:"roles" gorm:"many2many:project_member_member_roles"`
 }
+
 var projectMember ProjectMember
 var projectMembers []ProjectMember
 
@@ -207,4 +209,5 @@ type SharedResources struct {
 	BrowseTime   int    `json:"browse_time" db:"browse_time"`
 	Behavior     int8   `json:"behavior" db:"behavior"`
 }
+
 var sharedResources []SharedResources

@@ -1,9 +1,73 @@
 package Misc
 
 import (
-	"fmt"
 	"MyGolang/Matrix"
+	"bufio"
+	"fmt"
+	"net"
+	"os"
+	"reflect"
 )
+
+func InputLoop() {
+	rd := bufio.NewReader(os.Stdin)
+	for {
+		str, err := rd.ReadString('\n')
+		if err != nil {
+			fmt.Println(err)
+		}
+		fmt.Println(str)
+	}
+
+}
+func reflect_example() {
+	method := func(i string) map[string]string {
+		fmt.Println(i)
+		return map[string]string{"id": "id1"}
+	}
+	var v reflect.Value
+
+	v = reflect.ValueOf(method)
+	vs := []reflect.Value{reflect.ValueOf("myStrings")}
+	rvs := v.Call(vs)
+	res := rvs[0].MapIndex(reflect.ValueOf("id")).String()
+	fmt.Println(res)
+}
+
+func tcp_test() {
+	//server
+	go func() {
+		net, _ := net.Listen("tcp", ":6666")
+		fmt.Println(net.Addr())
+		for {
+			conn, err := net.Accept()
+			fmt.Println(" server conn accepted")
+			if err != nil {
+				fmt.Println(err)
+				continue
+			}
+			go func() {
+				rd := bufio.NewReader(conn)
+				fmt.Printf("server local addr  %v\n server remote addr %v \n", conn.LocalAddr(), conn.RemoteAddr())
+				for {
+					str, err := rd.ReadString('\n')
+					if err != nil {
+						fmt.Println(err)
+						break
+					}
+					fmt.Println(str)
+				}
+			}()
+		}
+	}()
+	//client
+	addr, _ := net.ResolveTCPAddr("tcp", "127.0.0.1:6666")
+	conn, _ := net.DialTCP("tcp", nil, addr)
+	fmt.Printf("client local addr %v \n client remote addr %v \n ", conn.LocalAddr(), conn.RemoteAddr())
+	conn2 := conn
+	fmt.Printf("client local addr %v \n client remote addr %v \n ", conn2.LocalAddr(), conn2.RemoteAddr())
+
+}
 
 type MyError struct {
 	id          int

@@ -3,6 +3,7 @@ package Misc
 import (
 	"fmt"
 	"sync"
+	"time"
 )
 
 var m *sync.RWMutex
@@ -23,7 +24,7 @@ func readAsset(i int) {
 	fmt.Println(i, "read start")
 	m.RLock()
 	fmt.Println(i, "reading")
-	//time.Sleep(1 * time.Second)
+	time.Sleep(2 * time.Second)
 	fmt.Println(i, "read over")
 
 	defer func() {
@@ -36,6 +37,7 @@ func readAsset(i int) {
 
 func writeAsset(i int) {
 	fmt.Println(i, "write start")
+	time.Sleep(1 * time.Second)
 	m.Lock()
 	fmt.Println(i, "writing")
 	//time.Sleep(1 * time.Second)
