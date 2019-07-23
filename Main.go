@@ -14,7 +14,7 @@ import (
 #include <stdlib.h>
 */
 import "C"
-
+//https://golang.org/cmd/cgo/
 func main() {
 	num := C.add(1, 2)
 	fmt.Println(num)
