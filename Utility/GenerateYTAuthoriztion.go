@@ -7,7 +7,7 @@ import (
 	"os"
 )
 
-const imgFIle = "3b2bfbe32e314e3baf3388dadd2e001b-0.jpg"
+const imgFIle = "3b.jpg"
 
 func main() {
 

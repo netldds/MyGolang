@@ -1,4 +1,4 @@
-package main
+package Misc
 
 import (
 	"encoding/json"
@@ -8,11 +8,6 @@ import (
 	"path/filepath"
 )
 
-const pdfPATH = "MONGODB.pdf"
-
-func main() {
-	do()
-}
 func do() {
 	var UnJson map[string]interface{}
 	json.Unmarshal([]byte(jsonData), &UnJson)
@@ -28,6 +23,7 @@ func do() {
 	}
 	fmt.Println(JsonStrValue)
 }
+
 func Start() {
 
 	imagick.Initialize()
