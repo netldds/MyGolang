@@ -7,13 +7,15 @@ import (
 	"net/http"
 	"time"
 )
+
 /*
-#cgo CFLAGS: -I${SRCDIR}/libs
+#cgo CFLAGS: -I${SRCDIR}/libs/include
 #cgo LDFLAGS: ${SRCDIR}/libs/static_lib.a -lstdc++
 #include "static_lib.h"
 #include <stdlib.h>
 */
 import "C"
+
 //https://golang.org/cmd/cgo/
 func main() {
 	num := C.add(1, 2)
