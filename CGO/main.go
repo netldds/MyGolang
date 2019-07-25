@@ -1,13 +1,17 @@
 package main
 
-//#include "worker.h"
-import "C"
 import "fmt"
 
+/*
+//头文件
+#cgo CFLAGS: -I${SRCDIR}/
+//库文件
+#cgo LDFLAGS: ${SRCDIR}/worker.a
+#include "worker.h"
+*/
+import "C"
+
 func main() {
-
-	num := 10
-	added := C.add(num, 2)
+	added := C.add(1, 2)
 	fmt.Println(added)
-
 }
