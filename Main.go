@@ -1,21 +1,24 @@
 package main
 
 import (
-	"MyGolang/Misc"
 	"fmt"
+	"io/ioutil"
+	"os"
+	"path/filepath"
 )
 
-/*
-#cgo CFLAGS: -I${SRCDIR}/libs/include
-#cgo LDFLAGS: ${SRCDIR}/libs/static_lib.a -lstdc++
-#include "static_lib.h"
-#include <stdlib.h>
-*/
-import "C"
+type File string
+
+func (f *File) String() {
+	fmt.Printf("%s + end.", *f)
+}
 
 //https://golang.org/cmd/cgo/
 func main() {
-	num := C.add(1, 2)
-	fmt.Println(num)
-	Misc.Add(1, 2)
+	dir, _ := os.Getwd()
+	f, err := ioutil.TempFile(dir, "PATTERN")
+	fmt.Println(err)
+	f.Write([]byte("abc"))
+	fmt.Println(filepath.Base(f.Name()))
+	f.Close()
 }
