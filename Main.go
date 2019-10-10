@@ -18,24 +18,30 @@ var data = strings.NewReader("data from strings")
 func main() {
 	go func() {
 		for {
-			time.Sleep(time.Second)
+			time.Sleep(time.Millisecond * 100)
 			printUsage()
 		}
 	}()
 	//var overall [][]int
 	//for i := 0; i < 4; i++ {
-	//	a := make([]int, 999999)
+	//	a := make([]int, 1)
 	//	overall = append(overall, a)
 	//	printUsage()
-	//	time.Sleep(time.Millisecond * 2)
 	//}
-	reader := getReader()
-	log.Println(reader)
-	time.Sleep(time.Second * 2)
-	reader = nil
+	//reader := getReader()
+	//log.Println(reader)
+	//reader = nil
+	v := make([]string, 0)
+	log.Println(v)
+	time.Sleep(time.Second*5)
+	v = nil
 	select {}
 }
+
+var object int64
+
 func printUsage() {
+	runtime.GC()
 	stats := runtime.MemStats{}
 	runtime.ReadMemStats(&stats)
 	//fmt.Printf("Sys MB %v	", stats.Sys>>20)
@@ -64,12 +70,17 @@ func printUsage() {
 		total.FreeBytes += r.FreeBytes
 		total.FreeObjects += r.FreeObjects
 	}
-
 	fmt.Printf("%d in use objects (%d in use bytes) | Alloc: %d TotalAlloc: %d\n",
 		total.InUseObjects(), total.InUseBytes(), stats.Alloc, stats.TotalAlloc)
+	if object != total.InUseObjects() {
+		fmt.Printf("%d in use objects (%d in use bytes) | Alloc: %d TotalAlloc: %d\n",
+			total.InUseObjects(), total.InUseBytes(), stats.Alloc, stats.TotalAlloc)
+		object = total.InUseObjects()
+	}
+
 }
 func getReader() io.Reader {
-	f, err := os.OpenFile("tmp/1MB.gif", os.O_RDONLY, 0775)
+	f, err := os.OpenFile("500MB.bin", os.O_RDONLY, 0775)
 	if err != nil {
 		log.Println(err)
 	}
