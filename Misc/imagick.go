@@ -8,6 +8,7 @@ import (
 	"path/filepath"
 )
 
+const pdfPATH=""
 func do() {
 	var UnJson map[string]interface{}
 	json.Unmarshal([]byte(jsonData), &UnJson)

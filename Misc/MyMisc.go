@@ -20,7 +20,7 @@ func InputLoop() {
 	}
 
 }
-func reflect_example() {
+func reflect_example_t() {
 	method := func(i string) map[string]string {
 		fmt.Println(i)
 		return map[string]string{"id": "id1"}
