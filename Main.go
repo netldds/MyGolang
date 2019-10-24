@@ -1,9 +1,12 @@
 package main
 
 import (
-	"fmt"
+	"MyGolang/Misc"
+	"log"
 )
 
 func main() {
-	fmt.Println("hello world.")
+	if err := Misc.AudioRun(); err != nil {
+		log.Fatal(err)
+	}
 }

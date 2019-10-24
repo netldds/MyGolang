@@ -17,3 +17,7 @@ MyUploadServer/upload/
 StandardTCPClient/t.dat
 .idea/
 ImageOperation/output.jpg
+
+/DATA
+/tmp
+/OCRFiles

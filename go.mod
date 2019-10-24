@@ -25,6 +25,8 @@ require (
 	github.com/golang/glog v0.0.0-20160126235308-23def4e6c14b
 	github.com/golang/sync v0.0.0-20180314180146-1d60e4601c6f
 	github.com/gosexy/to v0.0.0-20141221203644-c20e083e3123 // indirect
+	github.com/hajimehoshi/go-mp3 v0.2.1
+	github.com/hajimehoshi/oto v0.3.4
 	github.com/jackc/fake v0.0.0-20150926172116-812a484cc733 // indirect
 	github.com/jackc/pgx v3.5.0+incompatible // indirect
 	github.com/jinzhu/gorm v1.9.10
