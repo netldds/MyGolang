@@ -27,6 +27,7 @@ require (
 	github.com/gosexy/to v0.0.0-20141221203644-c20e083e3123 // indirect
 	github.com/hajimehoshi/go-mp3 v0.2.1
 	github.com/hajimehoshi/oto v0.3.4
+	github.com/holdno/snowFlakeByGo v0.0.0-20180510033652-d23f8a8cadd7
 	github.com/jackc/fake v0.0.0-20150926172116-812a484cc733 // indirect
 	github.com/jackc/pgx v3.5.0+incompatible // indirect
 	github.com/jinzhu/gorm v1.9.10
@@ -39,6 +40,7 @@ require (
 	github.com/onsi/gomega v1.5.0 // indirect
 	github.com/satori/go.uuid v1.2.0 // indirect
 	github.com/shopspring/decimal v0.0.0-20180709203117-cd690d0c9e24 // indirect
+	github.com/streadway/amqp v0.0.0-20190827072141-edfb9018d271
 	github.com/tencentcloud/tencentcloud-sdk-go v3.0.78+incompatible
 	github.com/ugorji/go v1.1.7 // indirect
 	github.com/xiocode/weigo v0.0.0-20151104105433-65f979f9ef51
