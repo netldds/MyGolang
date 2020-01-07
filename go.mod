@@ -12,7 +12,6 @@ require (
 	github.com/cockroachdb/apd v1.1.0 // indirect
 	github.com/denisenkom/go-mssqldb v0.0.0-20190724012636-11b2859924c1 // indirect
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
-	github.com/gin-contrib/sse v0.0.0-20170109093832-22d885f9egitcc7 // indirect
 	github.com/gin-gonic/autotls v0.0.0-20180426091246-be87bd5ef97b
 	github.com/gin-gonic/gin v0.0.0-20180912132126-3f27866f8065
 	github.com/go-redis/redis v0.0.0-20180911103051-f7094544a595
@@ -49,10 +48,11 @@ require (
 	github.com/xiocode/weigo v0.0.0-20151104105433-65f979f9ef51
 	github.com/ziutek/mymysql v1.5.4 // indirect
 	golang.org/x/crypto v0.0.0-20190701094942-4def268fd1a4
-	golang.org/x/net v0.0.0-20190620200207-3b0461eec859
-	golang.org/x/sys v0.0.0-20190801041406-cbf593c0f2f3 // indirect
+	golang.org/x/net v0.0.0-20190724013045-ca1201d0de80
+	golang.org/x/text v0.3.2
 	google.golang.org/appengine v1.6.1 // indirect
 	gopkg.in/go-playground/assert.v1 v1.2.1 // indirect
 	gopkg.in/go-playground/validator.v8 v8.18.2 // indirect
 	gopkg.in/gographics/imagick.v2 v2.5.0
+	gopkg.in/macaron.v1 v1.3.4
 )
