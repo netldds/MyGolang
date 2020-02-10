@@ -12,7 +12,7 @@ require (
 	github.com/cockroachdb/apd v1.1.0 // indirect
 	github.com/denisenkom/go-mssqldb v0.0.0-20190724012636-11b2859924c1 // indirect
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
-	github.com/gin-contrib/sse v0.0.0-20170109093832-22d885f9egitcc7 // indirect
+	github.com/gin-contrib/sse v0.1.0 // indirect
 	github.com/gin-gonic/autotls v0.0.0-20180426091246-be87bd5ef97b
 	github.com/gin-gonic/gin v0.0.0-20180912132126-3f27866f8065
 	github.com/go-redis/redis v0.0.0-20180911103051-f7094544a595
@@ -27,7 +27,6 @@ require (
 	github.com/gosexy/to v0.0.0-20141221203644-c20e083e3123 // indirect
 	github.com/hajimehoshi/go-mp3 v0.2.1
 	github.com/hajimehoshi/oto v0.3.4
-	github.com/holdno/snowFlakeByGo v0.0.0-20180510033652-d23f8a8cadd7
 	github.com/jackc/fake v0.0.0-20150926172116-812a484cc733 // indirect
 	github.com/jackc/pgx v3.5.0+incompatible // indirect
 	github.com/jinzhu/gorm v1.9.10
@@ -42,7 +41,7 @@ require (
 	github.com/shopspring/decimal v0.0.0-20180709203117-cd690d0c9e24 // indirect
 	github.com/streadway/amqp v0.0.0-20190827072141-edfb9018d271
 	github.com/tencentcloud/tencentcloud-sdk-go v3.0.78+incompatible
-	github.com/ugorji/go v1.1.7 // indirect
+	github.com/ugorji/go/codec v1.1.7 // indirect
 	github.com/xiocode/weigo v0.0.0-20151104105433-65f979f9ef51
 	github.com/ziutek/mymysql v1.5.4 // indirect
 	golang.org/x/crypto v0.0.0-20190701094942-4def268fd1a4
@@ -52,4 +51,5 @@ require (
 	gopkg.in/go-playground/assert.v1 v1.2.1 // indirect
 	gopkg.in/go-playground/validator.v8 v8.18.2 // indirect
 	gopkg.in/gographics/imagick.v2 v2.5.0
+	launchpad.net/gocheck v0.0.0-20140225173054-000000000087 // indirect
 )
