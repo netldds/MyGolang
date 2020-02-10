@@ -54,9 +54,5 @@ require (
 	gopkg.in/go-playground/assert.v1 v1.2.1 // indirect
 	gopkg.in/go-playground/validator.v8 v8.18.2 // indirect
 	gopkg.in/gographics/imagick.v2 v2.5.0
-<<<<<<< HEAD
 	launchpad.net/gocheck v0.0.0-20140225173054-000000000087 // indirect
-=======
-	gopkg.in/macaron.v1 v1.3.4
->>>>>>> f7a16b829e3a7548a08921a84ba8901238ac456d
 )
