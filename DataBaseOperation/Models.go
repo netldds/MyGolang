@@ -1,14 +1,11 @@
 package DataBaseOperation
 
 import (
-	"dx/taishan/core/db"
-	"dx/taishan/core/rbac"
-	"dx/taishan/modules/user/models"
 	"time"
 )
 
 type FileStruct struct {
-	db.Model
+	Model
 	ContainerId string `json:"container_id" db:"container_id"`
 	VersionId   string `json:"version_id" db:"version_id"`
 	RawFileId   string `json:"raw_file_id" db:"raw_file_id"`
@@ -18,7 +15,7 @@ type FileStruct struct {
 	Status      int    `json:"status" db:"status"`
 }
 type Raw_file struct {
-	db.Model
+	Model
 	ContainerId string `json:"container_id" db:"container_id"`
 	FileId      string `json:"file_id" db:"file_id"`
 	UploaderId  string `json:"uploader_id" db:"uploader_id"`
@@ -47,13 +44,13 @@ type ContainerMember struct {
 	Status      int         `json:"status" form:"status"`
 	MemberType  int         `json:"member_type" db:"member_type"`
 	RecycleId   string      `json:"recycle_id" db:"recycle_id"`
-	Owner       models.User `json:"owner"`
+	Owner       User `json:"owner"`
 }
 
 var containerMembers []ContainerMember
 
 type UserProfile struct {
-	db.Model
+	Model
 	UserId      string     `form:"user_id" binding:"exists" json:"user_id" db:"user_id" gorm:"user_id;size=32;require;unique;index"`
 	Avatar      string     `form:"-" json:"avatar" db:"avatar"`
 	Company     string     `form:"company" json:"company" db:"company"`
@@ -69,7 +66,7 @@ type UserProfile struct {
 	DetailLevel string     `form:"detail_level" json:"detail_level" db:"detail_level"`
 }
 type User struct {
-	db.Model
+	Model
 	Name     string      `form:"name" binding:"exists,alphanum,min=4,max=255" json:"name"`
 	Password string      `form:"password" binding:"exists,min=8,max=255" json:"-"`
 	Email    string      `form:"email" binding:"email" json:"email"`
@@ -118,7 +115,7 @@ type UserForProfiles struct {
 	//DetailLevel string     `form:"detail_level" json:"detail_level" db:"detail_level"`
 }
 type UserWebApp struct {
-	db.Model
+	Model
 	UserId        string    `json:"user_id" form:"user_id" db:"user_id"`
 	AppId         string    `json:"app_id" form:"app_id" db:"app_id"`
 	DueTime       time.Time `json:"due_time" form:"due_time" db:"due_time"`
@@ -130,7 +127,7 @@ var userWebApp UserWebApp
 var userWebApps []UserWebApp
 
 type WebApp struct {
-	db.Model
+	Model
 	Name        string    `json:"name" form:"name" db:"name"`
 	Description string    `json:"description" form:"description" db:"description"`
 	Size        int64     `json:"size" form:"size" db:"size"`
@@ -146,7 +143,7 @@ var webApp WebApp
 var webApps []WebApp
 
 type Container struct {
-	db.Model
+	Model
 	Name        string            `json:"name" form:"name"gorm:"name"`
 	Description string            `json:"description" form:"description"gorm:"description"`
 	Cover       string            `json:"cover" form:"cover" gorm:"cover"`
@@ -160,7 +157,7 @@ type Container struct {
 var containers []Container
 
 type ProjectMemberGroup struct {
-	db.Model
+	Model
 	Name        string `json:"name" form:"name"`
 	Description string `json:"description" form:"description"`
 	// TODO: Owner
@@ -170,21 +167,19 @@ type ProjectMemberGroup struct {
 	MemberIds      []string        `json:"-" form:"member_ids" gorm:"-"`
 }
 type MemberRole struct {
-	rbac.Role
 	ProjectId           string            `json:"project_id"`
 	Status              int               `json:"status"`
 	RoleType            int               `json:"role_type" db:"role_type"`
-	Permissions         []rbac.Permission `gorm:"many2many:member_role_permissions" json:"permissions"`
 	PermissionIds       []string          `form:"permission_ids" json:"permission_ids" gorm:"-"`
 	AddPermissionIds    []string          `form:"add_permission_ids" json:"add_permission_ids" gorm:"-"`
 	RemovePermissionIds []string          `form:"remove_permission_ids" json:"remove_permission_ids" gorm:"-"`
 	Members             []ProjectMember   `gorm:"many2many:project_member_member_roles"`
 }
 type ProjectMember struct {
-	db.Model
+	Model
 	ProjectId           string               `json:"project_id" form:"project_id" gorm:"index"`
 	OwnerId             string               `json:"owner_id" form:"owner_id" gorm:"index"`
-	Owner               models.User          `json:"owner"`
+	Owner               User          `json:"owner"`
 	Description         string               `json:"description" form:"description"`
 	Status              int                  `json:"status" form:"status"`
 	MemberType          int                  `json:"member_type" db:"member_type"`
@@ -196,7 +191,7 @@ var projectMember ProjectMember
 var projectMembers []ProjectMember
 
 type SharedResources struct {
-	db.Model
+	Model
 	ShortUrl     string `json:"short_url" db:"short_url"`
 	CreatorId    string `json:"creator_id" db:"creator_id"`
 	ContainerId  string `json:"container_id" db:"container_id"`

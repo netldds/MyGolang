@@ -1,14 +1,13 @@
 package DataBaseOperation
 
 import (
-	"dx/taishan/core/db"
 	"fmt"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jinzhu/gorm"
 )
 
 type RawFile struct {
-	db.Model
+	Model
 	ContainerId string `json:"container_id" db:"container_id"`
 	FileId      string `json:"file_id" db:"file_id"`
 	UploaderId  string `json:"uploader_id" db:"uploader_id"`
