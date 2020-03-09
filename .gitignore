@@ -21,3 +21,5 @@ ImageOperation/output.jpg
 /DATA
 /tmp
 /OCRFiles
+_*
+*.bin
