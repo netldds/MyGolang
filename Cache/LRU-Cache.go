@@ -2,7 +2,6 @@ package Cache
 
 import (
 	"container/list"
-	"sync"
 )
 
 /*
@@ -16,7 +15,6 @@ type Cache struct {
 	ll       *list.List
 	maxBytes int64
 	nBytes   int64
-	locker   sync.Locker
 	//回调方法
 	OnEvicted func(key string, value Value)
 }
@@ -38,7 +36,6 @@ func NewCache(maxBytes int64, onEvicted func(key string, value Value)) *Cache {
 		ll:        list.New(),
 		maxBytes:  maxBytes,
 		nBytes:    0,
-		locker:    &sync.Mutex{},
 		OnEvicted: onEvicted,
 	}
 	return c
