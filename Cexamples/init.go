@@ -1,14 +1,14 @@
-package Cexamples
+// package Cexamples
 
-/*
-#include <stdlib.h>
-*/
-import "C"
+// /*
+// #include <stdlib.h>
+// */
+// import "C"
 
-func Run() {
-	Random()
-}
+// func Run() {
+// 	Random()
+// }
 
-func Random() int {
-	return int(C.random())
-}
+// func Random() int {
+// 	return int(C.random())
+// }

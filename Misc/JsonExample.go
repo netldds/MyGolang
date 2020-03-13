@@ -39,3 +39,27 @@ func ExampleJson() {
 	fmt.Println(NameStr)
 
 }
+
+type Thorax struct {
+	Name string `json:"name"`
+}
+
+type Soma struct {
+	Data   interface{} `json:"data"`
+	Length int         `json:"length"`
+}
+
+func EscapeJson() {
+	//"{\"data\":\"{\\\"name\\\":\\\"thorax_one\\\"}\",\"length\":180}"
+	thorax := Thorax{
+		Name: "thorax_one",
+	}
+	t, _ := json.Marshal(thorax)
+	body := Soma{
+		Data:   string(t),
+		Length: 180,
+	}
+	b, _ := json.Marshal(body)
+	b, _ = json.Marshal(string(b))
+	fmt.Println(string(b))
+}
