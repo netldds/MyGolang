@@ -24,6 +24,7 @@ require (
 	github.com/go-xorm/xorm v0.0.0-20180912014434-45f019c574b7
 	github.com/going/toolkit v0.0.0-20150506055402-5bff591dc40d // indirect
 	github.com/golang/glog v0.0.0-20160126235308-23def4e6c14b
+	github.com/golang/protobuf v1.3.3
 	github.com/golang/sync v0.0.0-20180314180146-1d60e4601c6f
 	github.com/gosexy/to v0.0.0-20141221203644-c20e083e3123 // indirect
 	github.com/hajimehoshi/go-mp3 v0.2.1
@@ -52,14 +53,17 @@ require (
 	github.com/xiocode/weigo v0.0.0-20151104105433-65f979f9ef51
 	github.com/ziutek/mymysql v1.5.4 // indirect
 	golang.org/x/crypto v0.0.0-20190701094942-4def268fd1a4
+	golang.org/x/lint v0.0.0-20190313153728-d0100b6bd8b3 // indirect
 	golang.org/x/net v0.0.0-20190724013045-ca1201d0de80
 	golang.org/x/text v0.3.2
 	google.golang.org/appengine v1.6.1 // indirect
+	google.golang.org/grpc v1.28.1 // indirect
 	gopkg.in/go-playground/assert.v1 v1.2.1 // indirect
 	gopkg.in/go-playground/validator.v8 v8.18.2 // indirect
 	gopkg.in/gographics/imagick.v2 v2.5.0
 	gopkg.in/gomail.v2 v2.0.0-20160411212932-81ebce5c23df
 	gopkg.in/macaron.v1 v1.3.4
+	honnef.co/go/tools v0.0.0-20190523083050-ea95bdfd59fc // indirect
 )
 
 replace github.com/daxiangyun/gopendx => ../opendx-go-sdk/
