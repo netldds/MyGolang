@@ -6,17 +6,18 @@ import (
 )
 
 //使用对象数量,内分配数量
-func printUsage() {
+func PrintUsage() {
 	stats := runtime.MemStats{}
 	runtime.ReadMemStats(&stats)
-	//fmt.Printf("Sys MB %v	", stats.Sys>>20)
-	//fmt.Printf("PauseTotalNs %v	", stats.PauseTotalNs)
-	//fmt.Printf("Alloc MB %v	", stats.Alloc>>20)
-	//fmt.Printf("Lookups %v	", stats.Lookups)
-	//fmt.Printf("HeapObjects %v	", stats.HeapObjects)
+	fmt.Printf("SysMB %v	\t", stats.Sys>>20)
+	//fmt.Printf("PauseTotalNs %v	\n", stats.PauseTotalNs)
+	fmt.Printf("AllocMB %-10v	\t", stats.Alloc>>20)
+	//fmt.Printf("Lookups %-10v	\n", stats.Lookups)
+	//fmt.Printf("HeapObjects %-10v	\n", stats.HeapObjects)
 	//fmt.Printf("live object %v\n", stats.Mallocs-stats.Frees)
 	//fmt.Printf("live object %v\n", stats.HeapInuse)
-
+	fmt.Printf("GC %v \t", stats.NumGC)
+	fmt.Printf("HEAPMB %v \t\n", stats.HeapAlloc>>20)
 	n, ok := runtime.MemProfile(nil, false)
 	var p []runtime.MemProfileRecord
 	for {
@@ -36,6 +37,7 @@ func printUsage() {
 		total.FreeObjects += r.FreeObjects
 	}
 
-	fmt.Printf("%d in use objects (%d in use bytes) | Alloc: %d TotalAlloc: %d\n",
-		total.InUseObjects(), total.InUseBytes(), stats.Alloc, stats.TotalAlloc)
+	//fmt.Printf("%d in use objects (%d in use bytes) | Alloc: %d TotalAlloc: %d\n",
+	//	total.InUseObjects(), total.InUseBytes(), stats.Alloc, stats.TotalAlloc)
+	//fmt.Printf("FreeBytes %v MB AllocBytes %v MB",total.FreeBytes>>20,total.AllocBytes>>20)
 }

@@ -37,7 +37,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte(jsonStr))
 }
 
-func main() {
+func Cmain() {
 	http.HandleFunc("/a", makeGzipHandler(handler)) // 设置访问的路由
 	http.ListenAndServe(":1113", nil)
 }

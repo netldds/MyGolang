@@ -52,7 +52,7 @@ func copyHeader(dst, src http.Header) {
 		}
 	}
 }
-func main() {
+func Dmain() {
 	var pemPath string
 	flag.StringVar(&pemPath, "pem", "server.pem", "path to pem file")
 	var keyPath string

@@ -6,7 +6,7 @@ import (
 )
 
 const (
-	path    = "D:/MyGO/temp"
+	Cpath   = "D:/MyGO/temp"
 	tempTxt = "temp_txt.txt"
 	tempDoc = "temp_doc.doc"
 )
@@ -28,7 +28,7 @@ func checkFileIsExist(filename string, debugSymbol bool) bool {
 }
 
 func readFile(filename string) {
-	fullFilename := path + "/" + tempTxt
+	fullFilename := Cpath + "/" + tempTxt
 	if checkFileIsExist(fullFilename, true) {
 		f, err := os.Open(fullFilename)
 		checkPanic(err)
