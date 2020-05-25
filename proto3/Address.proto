@@ -1,6 +1,7 @@
+//protoc -I ./ ./Address.proto --go_out=plugins=grpc:./
 syntax = "proto3";
 package address;
-
+import "google/protobuf/timestamp.proto";
 message person {
     string name = 1;
     int32 id=2;
@@ -15,7 +16,17 @@ message person {
         PhoneType type =2;
     }
     repeated PhoneNumber phones=4;
+    google.protobuf.Timestamp time=5;
 }
 message AddressBook {
     repeated person people = 1;
+}
+message CoreResp{
+    string err =1;
+    bool ok=2;
+}
+service  AddressService {
+    rpc PostAddrBook(AddressBook)returns(CoreResp){}
+    rpc PostAddrBookStreamS(AddressBook)returns(stream CoreResp){}
+    rpc PostAddrBookStreamC(stream AddressBook)returns(CoreResp){}
 }
