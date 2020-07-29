@@ -14,7 +14,7 @@ import (
 )
 
 func main() {
-	orig := "hello world"
+	orig := "hello world|1234566123456612345661234566123456612345661234566"
 	//key := "123456781234567812345678"
 	key := "9871267812345mn812345xyz"
 	fmt.Println("原文：", orig)
