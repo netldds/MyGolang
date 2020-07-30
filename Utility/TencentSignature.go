@@ -20,10 +20,10 @@ var appKEY = "appkey"
 func main() {
 	g := gin.Default()
 	g.Use(gin.HandlerFunc(SignatureMiddleWare))
-	g.GET("/api/v3/project", func(c *gin.Context) {
+	g.GET("/api/v1/checksum", func(c *gin.Context) {
 		c.String(http.StatusOK, "ok")
 	})
-	g.POST("/api/v3/project", func(c *gin.Context) {
+	g.POST("/api/v1/checksum", func(c *gin.Context) {
 		c.String(http.StatusOK, "ok")
 	})
 	g.Run(":2080")
@@ -45,6 +45,7 @@ func SignatureMiddleWare(c *gin.Context) {
 	i, _ := strconv.ParseInt(xTimestamp, 10, 64)
 	tm := time.Unix(i, 0)
 	fmt.Printf("time at:%v\n", tm.Local())
+
 	bodyBytes, err := ioutil.ReadAll(c.Request.Body)
 	bodyStr := ""
 	if len(bodyBytes) != 0 && err == nil {
