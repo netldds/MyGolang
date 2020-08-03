@@ -34,7 +34,7 @@ func TestGenerateSignature(t *testing.T) {
 	}{ProjectId: "xxx"}
 	b, err := json.Marshal(body)
 	request, _ = http.NewRequest("POST", "http://localhost:8090/api/v1/checksum", bytes.NewBuffer(b))
-	GenerateSignature(request, "bim.com", AppID, "x")
+	GenerateSignature(request, "bim.com", AppID, AppKey)
 	client = http.Client{}
 	resp, err = client.Do(request)
 	if err != nil {
