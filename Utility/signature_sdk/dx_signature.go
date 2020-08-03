@@ -8,6 +8,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"strconv"
+	"strings"
 	"time"
 )
 
@@ -33,11 +34,14 @@ func GenerateSignature(r *http.Request, host, appId, appKey string) {
 	r.Host = host
 
 	reqMethod := r.Method
-	reqPath := r.URL.Path
 	reqCT := r.Header.Get("Content-Type")
 	reqHost := r.Host
 	reqQuery := r.URL.RawQuery
 	reqTimestamp := r.Header.Get("X-Timestamp")
+
+	//服务端用/backend路径转发,需过滤/backend
+	reqPath := r.URL.Path
+	reqPath = strings.Replace(reqPath, "/backend", "", 1)
 
 	var bs []byte
 	if r.GetBody != nil {

@@ -15,8 +15,8 @@ var (
 
 func TestGenerateSignature(t *testing.T) {
 	//GET
-	request, _ := http.NewRequest("GET", "http://localhost:8090/api/v1/checksum?id=xxxx", nil)
-	GenerateSignature(request, "bim.com", AppID, AppKey)
+	request, _ := http.NewRequest("GET", "https://bim.dxbim.com:8443/backend/api/v3/project?project_id=e9fd207040ef41caa6ba0fc4c766d29b", nil)
+	GenerateSignature(request, "bim.dxbim.com", AppID, AppKey)
 	client := http.Client{}
 	resp, err := client.Do(request)
 	if err != nil {
@@ -34,7 +34,7 @@ func TestGenerateSignature(t *testing.T) {
 	}{ProjectId: "xxx"}
 	b, err := json.Marshal(body)
 	request, _ = http.NewRequest("POST", "http://localhost:8090/api/v1/checksum", bytes.NewBuffer(b))
-	GenerateSignature(request, "bim.com", AppID, AppKey)
+	GenerateSignature(request, "bim.dxbim.com", AppID, AppKey)
 	client = http.Client{}
 	resp, err = client.Do(request)
 	if err != nil {
