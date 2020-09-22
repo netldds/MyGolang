@@ -1,27 +1,29 @@
 package main
 
 import (
-	"encoding/json"
+	"MyGolang/RabbitMQ"
 	"fmt"
-	"time"
+	"strings"
 )
 
-type B struct {
-	Name string `json:"name"`
-}
-
-func (s B) MarshalJSON() ([]byte, error) {
-	s.Name = "aaa"
-	return json.Marshal(s)
+func AA() {
+	data := `/p/:id/roles/:rid/permissions`
+	slices := strings.Split(data, "/")
+	regexpPath := ""
+	for _, v := range slices {
+		if v == "" {
+			continue
+		}
+		if strings.Contains(v, ":") {
+			regexpPath = fmt.Sprintf("%v/.+", regexpPath)
+		} else {
+			regexpPath = fmt.Sprintf("%v/%v", regexpPath, v)
+		}
+	}
+	regexpPath = fmt.Sprintf("^%v", regexpPath)
+	fmt.Println(slices)
+	fmt.Println(regexpPath)
 }
 func main() {
-	t := time.Now()
-	fmt.Println(t)
-	fmt.Println(t.Unix())
-	fmt.Println(t.UTC())
-	fmt.Println(t.UTC().Unix())
-	stamp := t.UTC().Unix()
-	u := time.Unix(stamp, 0)
-	fmt.Println(u)
-	fmt.Println(u.UTC())
+	RabbitMQ.Client()
 }
