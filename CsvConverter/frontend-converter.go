@@ -58,6 +58,7 @@ func (s *FrontEnder) ToOrigin(reader *csv.Reader) error {
 		if strings.Contains(record[0], SPLITE) {
 			//保存
 			s.OriginSave()
+			s.seek = 0
 			return nil
 		}
 		//跳过列

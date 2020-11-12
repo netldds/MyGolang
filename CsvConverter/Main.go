@@ -3,7 +3,10 @@ package main
 import (
 	"encoding/csv"
 	"fmt"
+	"github.com/gin-gonic/gin"
 	"io"
+	"io/ioutil"
+	"net/http"
 	"os"
 	"path"
 	"path/filepath"
@@ -48,7 +51,7 @@ func init() {
 	ErrObjsConvert := ErrObjConverter{
 		FileName: "err-objs.go",
 	}
-	ErrObjsConvert.ObjFormat = `	
+	ErrObjsConvert.ObjFormat = `
 %v = ErrorObject{
 		Key:       "%v",
 		English:   "%v.",
@@ -63,8 +66,8 @@ func init() {
 	ErrorsTable.FileObj = make(map[string]ErrorTable)
 	ErrorsTable.FileObj["admin-errors.json"] = nil
 	ErrorsTable.FileObj["alert-errors.json"] = nil
-	ErrorsTable.FileObj["alert-errors.json"] = nil
 	ErrorsTable.FileObj["core-errors.json"] = nil
+	ErrorsTable.FileObj["container.json"] = nil
 	ErrorsTable.FileObj["entity_errors.json"] = nil
 	ErrorsTable.FileObj["entity-state-errors.json"] = nil
 	ErrorsTable.FileObj["file-errors.json"] = nil
@@ -102,6 +105,83 @@ func init() {
 
 }
 func main() {
+	g := gin.Default()
+	g.LoadHTMLGlob("templates/*")
+	g.GET("/", func(c *gin.Context) {
+		c.HTML(http.StatusOK, "uploader.html", nil)
+		return
+	})
+	g.POST("/upload_file", func(c *gin.Context) {
+		m, _ := c.MultipartForm()
+		f := m.File["file"][0]
+		if f == nil {
+			c.String(http.StatusBadRequest, "")
+			return
+		}
+		fn, _ := f.Open()
+		dir, _ := os.Getwd()
+		body, _ := ioutil.ReadAll(fn)
+		csvName := "result.csv"
+		os.Remove(filepath.Join(dir, csvName))
+		err := ioutil.WriteFile(filepath.Join(dir, csvName), body, os.ModePerm)
+		if err != nil {
+			fmt.Println(err)
+		}
+		Reverse()
+		f1, _ := os.OpenFile(filepath.Join(dir, os.TempDir(), "小程序zh-CN.json"), os.O_RDONLY, os.ModePerm)
+		f2, _ := os.OpenFile(filepath.Join(dir, os.TempDir(), "小程序zh-TW.json"), os.O_RDONLY, os.ModePerm)
+		f3, _ := os.OpenFile(filepath.Join(dir, os.TempDir(), "小程序en-US.json"), os.O_RDONLY, os.ModePerm)
+		f4, _ := os.OpenFile(filepath.Join(dir, os.TempDir(), "zh-CN.json"), os.O_RDONLY, os.ModePerm)
+		f5, _ := os.OpenFile(filepath.Join(dir, os.TempDir(), "zh-TW.json"), os.O_RDONLY, os.ModePerm)
+		f6, _ := os.OpenFile(filepath.Join(dir, os.TempDir(), "en-US.json"), os.O_RDONLY, os.ModePerm)
+		fsn := []*os.File{f1, f2, f3, f4, f5, f6}
+		archiveName := "archive.zip"
+		os.Remove(filepath.Join(dir, os.TempDir(), archiveName))
+		Compress(fsn, filepath.Join(dir, os.TempDir(), archiveName))
+		filePath := path.Join(dir, os.TempDir(), archiveName)
+		c.Header("Content-Disposition", "attachment; filename="+archiveName)
+		c.File(filePath)
+	})
+	g.Run(":6060")
+}
+func Reverse() {
+	//恢复
+	csvR := NewCsvFileReader()
+	fmt.Printf(">恢复模式\n")
+	fmt.Printf(">共%v个文件\n", len(FileConverts))
+	//选择器
+	for {
+		record, err := csvR.Read()
+		if err == io.EOF {
+			fmt.Println(">文件读完")
+			break
+		}
+		//if len(record) != 1 {
+		//	fmt.Println("没找到分隔符")
+		//	break
+		//}
+		if record == nil {
+			fmt.Println("record 为空")
+			break
+		}
+		recordOne := record[0]
+		if !strings.Contains(recordOne, SPLITE) {
+			fmt.Println("没找到分隔符")
+			break
+		}
+		indexStr := recordOne[len(recordOne)-1]
+		index, err := strconv.ParseInt(string(indexStr), 10, 32)
+		if err != nil {
+			panic(err)
+		}
+		handler := FileConverts[int(index)]
+		if handler == nil {
+			panic("nil FileConvert Handler:" + string(indexStr))
+		}
+		handler.ToOrigin(csvR)
+	}
+}
+func main2() {
 	//确认模式
 	fmt.Println(">csv文件名:result.csv")
 	fmt.Println(">转换参数默认空,恢复参数加入-r")

@@ -49,6 +49,7 @@ func (s *MiniProgram) ToOrigin(reader *csv.Reader) error {
 	v := reflect.ValueOf(&s.body)
 	vt := reflect.ValueOf(&s.bodyTradition)
 	ve := reflect.ValueOf(&s.bodyEnglish)
+	s.seek = 0
 	for {
 		record, err := reader.Read()
 		if err == io.EOF {
