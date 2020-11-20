@@ -23,6 +23,7 @@ require (
 	github.com/go-xorm/core v0.0.0-20180809143334-b8d39bd0ff10 // indirect
 	github.com/go-xorm/sqlfiddle v0.0.0-20180821085327-62ce714f951a // indirect
 	github.com/go-xorm/xorm v0.0.0-20180912014434-45f019c574b7
+	github.com/go-yaml/yaml v2.1.0+incompatible // indirect
 	github.com/going/toolkit v0.0.0-20150506055402-5bff591dc40d // indirect
 	github.com/golang/glog v0.0.0-20160126235308-23def4e6c14b
 	github.com/golang/protobuf v1.3.3
@@ -32,6 +33,7 @@ require (
 	github.com/hajimehoshi/go-mp3 v0.2.1
 	github.com/hajimehoshi/oto v0.3.4
 	github.com/holdno/snowFlakeByGo v0.0.0-20180510033652-d23f8a8cadd7
+	github.com/imdario/mergo v0.3.10
 	github.com/jackc/fake v0.0.0-20150926172116-812a484cc733 // indirect
 	github.com/jackc/pgx v3.5.0+incompatible // indirect
 	github.com/jasonlvhit/gocron v0.0.0-20200423141508-ab84337f7963 // indirect
@@ -50,7 +52,7 @@ require (
 	github.com/satori/go.uuid v1.2.0 // indirect
 	github.com/shopspring/decimal v0.0.0-20180709203117-cd690d0c9e24 // indirect
 	github.com/streadway/amqp v0.0.0-20190827072141-edfb9018d271
-	github.com/tencentcloud/tencentcloud-sdk-go v3.0.78+incompatible
+	github.com/tencentcloud/tencentcloud-sdk-go v3.0.223+incompatible
 	github.com/ugorji/go v1.1.7 // indirect
 	github.com/xiocode/weigo v0.0.0-20151104105433-65f979f9ef51
 	github.com/ziutek/mymysql v1.5.4 // indirect
@@ -58,6 +60,7 @@ require (
 	golang.org/x/lint v0.0.0-20190313153728-d0100b6bd8b3 // indirect
 	golang.org/x/net v0.0.0-20200226121028-0de0cce0169b
 	golang.org/x/text v0.3.2
+	golang.org/x/time v0.0.0-20181108054448-85acf8d2951c
 	google.golang.org/appengine v1.6.1 // indirect
 	google.golang.org/grpc v1.28.1
 	gopkg.in/go-playground/assert.v1 v1.2.1 // indirect
@@ -65,6 +68,7 @@ require (
 	gopkg.in/gographics/imagick.v2 v2.5.0
 	gopkg.in/gomail.v2 v2.0.0-20160411212932-81ebce5c23df
 	gopkg.in/macaron.v1 v1.3.4
+	gopkg.in/yaml.v2 v2.3.0
 	honnef.co/go/tools v0.0.0-20190523083050-ea95bdfd59fc // indirect
 )
 

@@ -2,18 +2,10 @@ package main
 
 import "fmt"
 
-type Mulit map[int]Body
-
 func main() {
-	m := make(Mulit)
-	m[1] = Body{
-		Name:       "",
-		OCCUPATION: "",
+	mp := make(map[string]interface{})
+	mp["a"] = nil
+	if _, ok := mp["a"]; ok {
+		fmt.Println("ok")
 	}
-	fmt.Println(len(m))
-}
-
-type Body struct {
-	Name       string
-	OCCUPATION string
 }
