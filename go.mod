@@ -17,6 +17,8 @@ require (
 	github.com/gin-contrib/sse v0.1.0 // indirect
 	github.com/gin-gonic/autotls v0.0.0-20180426091246-be87bd5ef97b
 	github.com/gin-gonic/gin v0.0.0-20180912132126-3f27866f8065
+	github.com/gizak/termui v3.1.0+incompatible // indirect
+	github.com/gizak/termui/v3 v3.1.0
 	github.com/go-redis/redis v6.15.8+incompatible
 	github.com/go-sql-driver/mysql v1.4.1
 	github.com/go-xorm/builder v0.0.0-20180826070321-377feedb49e3

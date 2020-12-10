@@ -1,11 +1,14 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"time"
+)
 
 func main() {
-	mp := make(map[string]interface{})
-	mp["a"] = nil
-	if _, ok := mp["a"]; ok {
-		fmt.Println("ok")
-	}
+	//var s1 string
+	//s2 := ""
+	fmt.Println(time.Now().Unix())
+	u := time.Now().Unix()
+	fmt.Println(time.Unix(u, 0))
 }
