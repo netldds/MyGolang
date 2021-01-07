@@ -1,7 +1,7 @@
 package ModuleExample
 
 import (
-	"MyGolang/Struct/Matrix"
+	"MyGolang/Algorithm/Matrix"
 	"bufio"
 	"fmt"
 	"net"

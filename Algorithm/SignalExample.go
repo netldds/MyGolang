@@ -1,4 +1,4 @@
-package Struct
+package Algorithm
 
 import (
 	"fmt"

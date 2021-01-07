@@ -1,4 +1,4 @@
-package Struct
+package Algorithm
 
 import (
 	"crypto/sha1"
