@@ -5,6 +5,9 @@ import (
 	"math/rand"
 )
 
+/*
+二叉搜索树
+*/
 func main() {
 	T := &BST{Key: 80}
 	for i := 0; i < 10; i++ {
