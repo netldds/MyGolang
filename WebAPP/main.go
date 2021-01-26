@@ -2,6 +2,7 @@ package main
 
 import (
 	"bufio"
+	"context"
 	"fmt"
 	"github.com/golang/glog"
 	"log"
@@ -12,7 +13,7 @@ import (
 
 //GIN FrameWork APP
 func main() {
-
+	PusherExample()
 	//DefaultAPI()
 	//	Middleware()
 	//renderData()
@@ -35,7 +36,7 @@ func main() {
 	//input()
 	//ForwardProxyStart()
 	//APITestforPJT()
-	DownloadFile()
+	//DownloadFile()
 }
 func input() {
 	rd := bufio.NewReader(os.Stdin)
