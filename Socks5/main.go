@@ -87,15 +87,21 @@ func VerifyPassword(conn net.Conn) bool {
 
 	return true
 }
-func TransformTraffic(src, dst net.Conn) {
+func TransformTraffic(src, dst net.Conn, close chan error) {
 	go func() {
 		for {
-			io.Copy(dst, src)
+			n, err := io.Copy(dst, src)
+			if err != nil || n == 0 {
+				close <- err
+			}
 		}
 	}()
 	go func() {
 		for {
-			io.Copy(src, dst)
+			n, err := io.Copy(src, dst)
+			if err != nil || n == 0 {
+				close <- err
+			}
 		}
 	}()
 }
@@ -174,6 +180,7 @@ func HandleConn(conn net.Conn) {
 		panic(ver)
 	}
 	addrStr := ""
+	domain := ""
 	switch atyp {
 	case 1:
 		fmt.Println("IP V4 address")
@@ -195,8 +202,8 @@ func HandleConn(conn net.Conn) {
 		if err != nil || n == 0 {
 			panic(err)
 		}
-		host := string(hostBytes)
-		addrs, err := net.LookupHost(host)
+		domain = string(hostBytes)
+		addrs, err := net.LookupHost(domain)
 		if len(addrs) == 0 || err != nil {
 			panic(err)
 		}
@@ -228,7 +235,7 @@ func HandleConn(conn net.Conn) {
 		addr := fmt.Sprintf("%v:%v", addrStr, dstPort)
 		targetConn, err := net.Dial("tcp", addr)
 		b := make([]byte, 0)
-		b = append(b, byte(5))
+		b = append(b, byte(5)) //VER
 		if err != nil {
 			b = append(b, byte(1))
 			conn.Write(b)
@@ -238,7 +245,7 @@ func HandleConn(conn net.Conn) {
 		b = append(b, byte(0))    //RSV
 		b = append(b, byte(atyp)) //ATYP
 		switch atyp {
-		case 1:
+		case 1: //IP V4
 			addr := strings.Split(targetConn.RemoteAddr().String(), ".")
 			a1, _ := strconv.Atoi(addr[0])
 			a2, _ := strconv.Atoi(addr[1])
@@ -246,13 +253,19 @@ func HandleConn(conn net.Conn) {
 			a4, _ := strconv.Atoi(addr[3])
 			b = append(b, byte(a1), byte(a2), byte(a3), byte(a4))
 			b = append(b, intTobytes(dstPort, 2)...)
-		case 3:
-		case 4:
+		case 3: //DOMAIN
+			b = append(b, byte(len(domain)))
+			b = append(b, []byte(domain)...)
+			b = append(b, intTobytes(dstPort, 2)...)
+		case 4: //IP V6
 		default:
 			os.Exit(1)
 		}
 		conn.Write(b)
-		TransformTraffic(conn, targetConn)
+		closeConn := make(chan error)
+		TransformTraffic(conn, targetConn, closeConn)
+		fmt.Println(<-closeConn)
+		conn.Close()
 	case 2:
 		fmt.Println("BIND")
 	case 3:
