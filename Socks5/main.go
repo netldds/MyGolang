@@ -244,23 +244,15 @@ func HandleConn(conn net.Conn) {
 		b = append(b, byte(0))    //succedd
 		b = append(b, byte(0))    //RSV
 		b = append(b, byte(atyp)) //ATYP
-		switch atyp {
-		case 1: //IP V4
-			addr := strings.Split(targetConn.RemoteAddr().String(), ".")
-			a1, _ := strconv.Atoi(addr[0])
-			a2, _ := strconv.Atoi(addr[1])
-			a3, _ := strconv.Atoi(addr[2])
-			a4, _ := strconv.Atoi(addr[3])
-			b = append(b, byte(a1), byte(a2), byte(a3), byte(a4))
-			b = append(b, intTobytes(dstPort, 2)...)
-		case 3: //DOMAIN
-			b = append(b, byte(len(domain)))
-			b = append(b, []byte(domain)...)
-			b = append(b, intTobytes(dstPort, 2)...)
-		case 4: //IP V6
-		default:
-			os.Exit(1)
-		}
+
+		addrRemote := strings.Split(targetConn.RemoteAddr().String(), ".")
+		a1, _ := strconv.Atoi(addrRemote[0])
+		a2, _ := strconv.Atoi(addrRemote[1])
+		a3, _ := strconv.Atoi(addrRemote[2])
+		a4, _ := strconv.Atoi(addrRemote[3])
+		b = append(b, byte(a1), byte(a2), byte(a3), byte(a4))
+		b = append(b, intTobytes(dstPort, 2)...)
+
 		conn.Write(b)
 		closeConn := make(chan error)
 		TransformTraffic(conn, targetConn, closeConn)
