@@ -256,6 +256,7 @@ func HandleConn(conn net.Conn) {
 		conn.Write(b)
 		closeConn := make(chan error)
 		TransformTraffic(conn, targetConn, closeConn)
+		//todo 超时 time_wait
 		fmt.Println(<-closeConn)
 		conn.Close()
 	case 2:
