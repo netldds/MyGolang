@@ -1,7 +1,6 @@
 package main
 
 import (
-	"encoding/hex"
 	"fmt"
 	"io"
 	"math"
@@ -200,17 +199,20 @@ func HandleConn(conn net.Conn) {
 	if ver != VERSION {
 		return
 	}
-	addrStr := ""
+
+	var dstIP *net.IP
 	domain := ""
 	switch atyp {
 	case 1:
+
 		fmt.Println("IP V4 address")
 		dstAddrBytes := make([]byte, 4)
 		n, err = conn.Read(dstAddrBytes)
 		if err != nil || n == 0 {
 			panic(err)
 		}
-		addrStr = fmt.Sprintf("%v.%v.%v.%v", dstAddrBytes[0], dstAddrBytes[1], dstAddrBytes[2], dstAddrBytes[3])
+		d := net.IP(dstAddrBytes)
+		dstIP = &d
 	case 3:
 		fmt.Println("DOMAINNAME")
 		hostLenByte := make([]byte, 1)
@@ -225,10 +227,11 @@ func HandleConn(conn net.Conn) {
 		}
 		domain = string(hostBytes)
 		addrs, err := net.LookupHost(domain)
-		if len(addrs) == 0 || err != nil {
+		if err != nil {
 			panic(err)
 		}
-		addrStr = addrs[0]
+		ipAddr, _ := net.ResolveIPAddr("tcp", addrs[0])
+		dstIP = &ipAddr.IP
 	case 4:
 		fmt.Println("IP V6 address")
 		dstAddrBytes := make([]byte, 16)
@@ -236,11 +239,8 @@ func HandleConn(conn net.Conn) {
 		if err != nil || n == 0 {
 			panic(err)
 		}
-		addrStr = "["
-		for i := 0; i < len(dstAddrBytes)/2; i++ {
-			addrStr += fmt.Sprintf("%v%v:", hex.EncodeToString(dstAddrBytes[:i+1]))
-		}
-		addrStr += "]"
+		d := net.IP(dstAddrBytes)
+		dstIP = &d
 	default:
 		panic(atyp)
 	}
@@ -262,7 +262,7 @@ func HandleConn(conn net.Conn) {
 	switch cmd {
 	case 1:
 		fmt.Println("CONNECT")
-		addr := fmt.Sprintf("%v:%v", addrStr, dstPort)
+		addr := fmt.Sprintf("%v:%v", dstIP.String(), dstPort)
 		targetConn, err := net.Dial("tcp", addr)
 		b := make([]byte, 0)
 		b = append(b, byte(5)) //VER
