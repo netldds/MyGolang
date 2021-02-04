@@ -106,6 +106,7 @@ func TransformTraffic(src, dst net.Conn, close chan error) {
 	}()
 }
 func HandleConn(conn net.Conn) {
+	defer conn.Close()
 	verByte := make([]byte, 1)
 	nmethods := make([]byte, 1)
 	n, err := conn.Read(verByte)
@@ -114,18 +115,18 @@ func HandleConn(conn net.Conn) {
 	}
 	//版本
 	if uint(verByte[0]) != VERSION {
-		panic(verByte[0])
+		return
 	}
 	n, err = conn.Read(nmethods)
 	if err != nil {
-		panic(err)
+		return
 	}
 	methods := []int{}
 	for i := 0; i < int(nmethods[0]); i++ {
 		method := make([]byte, 1)
 		n, err = conn.Read(method)
 		if err != nil {
-			panic(err)
+			return
 		}
 		methods = append(methods, int(method[0]))
 	}
@@ -168,16 +169,16 @@ func HandleConn(conn net.Conn) {
 	closeBytes = append(closeBytes, byte(0))
 	n, err = conn.Write(closeBytes)
 	if err != nil || n == 0 {
-		panic(n)
+		return
 	}
 	headBytes := make([]byte, 4)
 	n, err = conn.Read(headBytes)
 	if err != nil || n == 0 {
-		panic(err)
+		return
 	}
 	ver, cmd, _, atyp := int(headBytes[0]), int(headBytes[1]), int(headBytes[2]), int(headBytes[3])
 	if ver != VERSION {
-		panic(ver)
+		return
 	}
 	addrStr := ""
 	domain := ""
