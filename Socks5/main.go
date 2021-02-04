@@ -5,10 +5,9 @@ import (
 	"fmt"
 	"io"
 	"math"
+	"math/rand"
 	"net"
 	"os"
-	"strconv"
-	"strings"
 )
 
 /*
@@ -37,11 +36,11 @@ func intTobytes(n int, length int) []byte {
 	for i := n / unit; i >= unit; i /= unit {
 		b = append(b, byte(i%unit))
 	}
-	bigB := make([]byte, len(b))
+	bigBytes := make([]byte, len(b))
 	for n, v := range b {
-		bigB[len(b)-n-1] = v
+		bigBytes[len(b)-n-1] = v
 	}
-	return bigB
+	return bigBytes
 }
 
 var ErrMethod = byte(255)
@@ -87,7 +86,7 @@ func VerifyPassword(conn net.Conn) bool {
 
 	return true
 }
-func TransformTraffic(src, dst net.Conn, close chan error) {
+func TransferTraffic(src, dst net.Conn, close chan error) {
 	go func() {
 		for {
 			n, err := io.Copy(dst, src)
@@ -109,6 +108,12 @@ func HandleConn(conn net.Conn) {
 	defer conn.Close()
 	verByte := make([]byte, 1)
 	nmethods := make([]byte, 1)
+	/*+----+----------+----------+
+	|VER | NMETHODS | METHODS |
+	+----+----------+----------+
+	| 1 | 1 | 1 to 255 |
+	+----+----------+----------+
+	*/
 	n, err := conn.Read(verByte)
 	if err != nil {
 		panic(err)
@@ -130,47 +135,62 @@ func HandleConn(conn net.Conn) {
 		}
 		methods = append(methods, int(method[0]))
 	}
-	flag := false
-	for _, v := range methods {
-		switch v {
-		case 0:
-			fmt.Println("NO AUTHEN")
-		case 1:
-			fmt.Println("GSSAPI")
-		case 2:
-			fmt.Println("USERNAME/PASSWORD")
-		default:
-			panic(verByte)
-		}
-		if v == 2 {
-			flag = true
-		}
-	}
 	b := make([]byte, 0)
 	b = append(b, byte(5))
-	if !flag {
-		fmt.Println("flag")
+	//reply
+	/*
+		+----+--------+
+		 |VER | METHOD |
+		 +----+--------+
+		 | 1 | 1 |
+		 +----+--------+
+	*/
+	for _, v := range methods {
+		if v == 0 {
+			fmt.Println("NO AUTHEN")
+			b = append(b, byte(0))
+			conn.Write(b)
+			break
+		}
+		if v == 1 {
+			fmt.Println("GSSAPI")
+			b = append(b, byte(255))
+			conn.Write(b)
+			return
+		}
+		if v == 2 {
+			fmt.Println("USERNAME/PASSWORD")
+			b = append(b, byte(2))
+			//reply
+			conn.Write(b)
+			closeBytes := make([]byte, 0)
+			closeBytes = append(closeBytes, byte(1))
+			//验证
+			if !VerifyPassword(conn) {
+				closeBytes = append(closeBytes, byte(1))
+				conn.Write(closeBytes)
+				os.Exit(1)
+			}
+			//successed
+			closeBytes = append(closeBytes, byte(0))
+			n, err = conn.Write(closeBytes)
+			if err != nil || n == 0 {
+				return
+			}
+			break
+		}
 		b = append(b, ErrMethod)
 		conn.Write(b)
-		os.Exit(1)
-	}
-	//选择验证
-	b = append(b, byte(2))
-	conn.Write(b)
-	closeBytes := make([]byte, 0)
-	closeBytes = append(closeBytes, byte(1))
-	//验证
-	if !VerifyPassword(conn) {
-		closeBytes = append(closeBytes, byte(1))
-		conn.Write(closeBytes)
-		os.Exit(1)
-	}
-	//验证成功
-	closeBytes = append(closeBytes, byte(0))
-	n, err = conn.Write(closeBytes)
-	if err != nil || n == 0 {
 		return
 	}
+	//request
+	/*
+		+----+-----+-------+------+----------+----------+
+		 |VER | CMD | RSV | ATYP | DST.ADDR | DST.PORT |
+		 +----+-----+-------+------+----------+----------+
+		 | 1 | 1 | X’00’ | 1 | Variable | 2 |
+		 +----+-----+-------+------+----------+----------+
+	*/
 	headBytes := make([]byte, 4)
 	n, err = conn.Read(headBytes)
 	if err != nil || n == 0 {
@@ -230,6 +250,15 @@ func HandleConn(conn net.Conn) {
 		panic(err)
 	}
 	dstPort := bytesToint(dstPortBytes)
+
+	//reply
+	/*
+		+----+-----+-------+------+----------+----------+
+		 |VER | REP | RSV | ATYP | BND.ADDR | BND.PORT |
+		 +----+-----+-------+------+----------+----------+
+		 | 1 | 1 | X’00’ | 1 | Variable | 2 |
+		 +----+-----+-------+------+----------+----------+
+	*/
 	switch cmd {
 	case 1:
 		fmt.Println("CONNECT")
@@ -242,32 +271,75 @@ func HandleConn(conn net.Conn) {
 			conn.Write(b)
 			os.Exit(1)
 		}
-		b = append(b, byte(0))    //succedd
+		b = append(b, byte(0))    //REP
 		b = append(b, byte(0))    //RSV
 		b = append(b, byte(atyp)) //ATYP
 
-		addrRemote := strings.Split(targetConn.RemoteAddr().String(), ".")
-		a1, _ := strconv.Atoi(addrRemote[0])
-		a2, _ := strconv.Atoi(addrRemote[1])
-		a3, _ := strconv.Atoi(addrRemote[2])
-		a4, _ := strconv.Atoi(addrRemote[3])
-		b = append(b, byte(a1), byte(a2), byte(a3), byte(a4))
-		b = append(b, intTobytes(dstPort, 2)...)
+		remoteAddr, _ := net.ResolveTCPAddr("tcp", targetConn.RemoteAddr().String())
+		b = append(b, byte(remoteAddr.IP[0]))
+		b = append(b, byte(remoteAddr.IP[1]))
+		b = append(b, byte(remoteAddr.IP[2]))
+		b = append(b, byte(remoteAddr.IP[3]))            //BND.ADDR
+		b = append(b, intTobytes(remoteAddr.Port, 2)...) //BND.PORT
 
 		conn.Write(b)
 		closeConn := make(chan error)
-		TransformTraffic(conn, targetConn, closeConn)
+		TransferTraffic(conn, targetConn, closeConn)
 		//todo 超时 time_wait
 		fmt.Println(<-closeConn)
 		conn.Close()
 	case 2:
 		fmt.Println("BIND")
+		//BIND之前需要有CONNECT连接验证
+		//建立监听 给目标服务用 例如 FTP 的数据传输
+		dstAddr := "0.0.0.0"
+		dstPort := rand.Int31n(999) + 1024
+		listener, err := net.Listen("tcp", fmt.Sprintf("%v:%v", dstAddr, dstPort))
+		//first reply
+		b := make([]byte, 0)
+		b = append(b, byte(5)) //VER
+		if err != nil {
+			b = append(b, byte(1))
+			conn.Write(b)
+			os.Exit(1)
+		}
+		b = append(b, byte(0))                            //REP
+		b = append(b, byte(0))                            //RSV
+		b = append(b, byte(atyp))                         //ATYP
+		b = append(b, byte(0), byte(0), byte(0), byte(0)) //BND.ADDR
+		b = append(b, intTobytes(int(dstPort), 2)...)     //BND.PORT
+		conn.Write(b)
+		//server -> client
+		targetConn, err := listener.Accept()
+		//sec reply
+		b = make([]byte, 0)
+		b = append(b, byte(5)) //VER
+		if err != nil {
+			b = append(b, byte(1))
+			conn.Write(b)
+			os.Exit(1)
+		}
+		b = append(b, byte(0))    //REP
+		b = append(b, byte(0))    //RSV
+		b = append(b, byte(atyp)) //ATYP
+		remoteAddr, _ := net.ResolveTCPAddr("tcp", targetConn.RemoteAddr().String())
+		b = append(b, byte(remoteAddr.IP[0]))
+		b = append(b, byte(remoteAddr.IP[1]))
+		b = append(b, byte(remoteAddr.IP[2]))
+		b = append(b, byte(remoteAddr.IP[3]))            //BND.ADDR
+		b = append(b, intTobytes(remoteAddr.Port, 2)...) //BND.PORT
+		conn.Write(b)
+		closeChn := make(chan error)
+		TransferTraffic(conn, targetConn, closeChn)
+		fmt.Println(<-closeChn)
+		targetConn.Close()
 	case 3:
 		fmt.Println("UDP ASSOCIATE")
 	default:
 		panic(cmd)
 	}
 }
+
 func Server() {
 	listener, err := net.Listen("tcp", ":1090")
 	if err != nil {
