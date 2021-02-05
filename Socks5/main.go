@@ -20,6 +20,7 @@ const (
 	VERSION = 5
 )
 
+//deprecated
 func bytesToint(b []byte) int {
 	unit := 256
 	sum := 0
@@ -28,6 +29,24 @@ func bytesToint(b []byte) int {
 	}
 	return sum
 }
+func bytes2int(b []byte) (sum int64) {
+	length := len(b)
+	for i := length - 1; i >= 0; i-- {
+		sum += int64(b[i]) << uint(8*i)
+	}
+	return
+}
+
+func int2bytes(n int, length int) (b []byte) {
+	b = make([]byte, length)
+	for i := length - 1; i >= 0; i-- {
+		b[i] = byte(n & 0xff)
+		n = n >> 8
+	}
+	return
+}
+
+//deprecated
 func intTobytes(n int, length int) []byte {
 	unit := 256
 	b := make([]byte, length)
@@ -144,6 +163,7 @@ func HandleConn(conn net.Conn) {
 		 | 1 | 1 |
 		 +----+--------+
 	*/
+	//认证方法
 	for _, v := range methods {
 		if v == 0 {
 			fmt.Println("NO AUTHEN")
@@ -151,12 +171,14 @@ func HandleConn(conn net.Conn) {
 			conn.Write(b)
 			break
 		}
+		//GSSAPI
 		if v == 1 {
 			fmt.Println("GSSAPI")
 			b = append(b, byte(255))
 			conn.Write(b)
 			return
 		}
+		//USERNAME/PASSWORD
 		if v == 2 {
 			fmt.Println("USERNAME/PASSWORD")
 			b = append(b, byte(2))
@@ -164,13 +186,13 @@ func HandleConn(conn net.Conn) {
 			conn.Write(b)
 			closeBytes := make([]byte, 0)
 			closeBytes = append(closeBytes, byte(1))
-			//验证
+			//verify
 			if !VerifyPassword(conn) {
 				closeBytes = append(closeBytes, byte(1))
 				conn.Write(closeBytes)
 				os.Exit(1)
 			}
-			//successed
+			//success
 			closeBytes = append(closeBytes, byte(0))
 			n, err = conn.Write(closeBytes)
 			if err != nil || n == 0 {
@@ -202,9 +224,9 @@ func HandleConn(conn net.Conn) {
 
 	var dstIP *net.IP
 	domain := ""
+	//address types
 	switch atyp {
 	case 1:
-
 		fmt.Println("IP V4 address")
 		dstAddrBytes := make([]byte, 4)
 		n, err = conn.Read(dstAddrBytes)
@@ -249,7 +271,7 @@ func HandleConn(conn net.Conn) {
 	if err != nil || n == 0 {
 		panic(err)
 	}
-	dstPort := bytesToint(dstPortBytes)
+	dstPort := bytes2int(dstPortBytes)
 
 	//reply
 	/*
@@ -259,6 +281,7 @@ func HandleConn(conn net.Conn) {
 		 | 1 | 1 | X’00’ | 1 | Variable | 2 |
 		 +----+-----+-------+------+----------+----------+
 	*/
+	//command
 	switch cmd {
 	case 1:
 		fmt.Println("CONNECT")
@@ -279,8 +302,8 @@ func HandleConn(conn net.Conn) {
 		b = append(b, byte(remoteAddr.IP[0]))
 		b = append(b, byte(remoteAddr.IP[1]))
 		b = append(b, byte(remoteAddr.IP[2]))
-		b = append(b, byte(remoteAddr.IP[3]))            //BND.ADDR
-		b = append(b, intTobytes(remoteAddr.Port, 2)...) //BND.PORT
+		b = append(b, byte(remoteAddr.IP[3]))           //BND.ADDR
+		b = append(b, int2bytes(remoteAddr.Port, 2)...) //BND.PORT
 
 		conn.Write(b)
 		closeConn := make(chan error)
@@ -307,7 +330,7 @@ func HandleConn(conn net.Conn) {
 		b = append(b, byte(0))                            //RSV
 		b = append(b, byte(atyp))                         //ATYP
 		b = append(b, byte(0), byte(0), byte(0), byte(0)) //BND.ADDR
-		b = append(b, intTobytes(int(dstPort), 2)...)     //BND.PORT
+		b = append(b, int2bytes(int(dstPort), 2)...)      //BND.PORT
 		conn.Write(b)
 		//server -> client
 		targetConn, err := listener.Accept()
@@ -326,8 +349,8 @@ func HandleConn(conn net.Conn) {
 		b = append(b, byte(remoteAddr.IP[0]))
 		b = append(b, byte(remoteAddr.IP[1]))
 		b = append(b, byte(remoteAddr.IP[2]))
-		b = append(b, byte(remoteAddr.IP[3]))            //BND.ADDR
-		b = append(b, intTobytes(remoteAddr.Port, 2)...) //BND.PORT
+		b = append(b, byte(remoteAddr.IP[3]))           //BND.ADDR
+		b = append(b, int2bytes(remoteAddr.Port, 2)...) //BND.PORT
 		conn.Write(b)
 		closeChn := make(chan error)
 		TransferTraffic(conn, targetConn, closeChn)
