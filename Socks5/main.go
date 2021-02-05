@@ -136,14 +136,16 @@ func HandleConn(conn net.Conn) {
 	if err != nil {
 		panic(err)
 	}
-	//版本
+	//VER
 	if uint(verByte[0]) != VERSION {
 		return
 	}
+	//NMETHODS
 	n, err = conn.Read(nmethods)
 	if err != nil {
 		return
 	}
+	//METHODS
 	methods := []int{}
 	for i := 0; i < int(nmethods[0]); i++ {
 		method := make([]byte, 1)
@@ -153,8 +155,6 @@ func HandleConn(conn net.Conn) {
 		}
 		methods = append(methods, int(method[0]))
 	}
-	b := make([]byte, 0)
-	b = append(b, byte(5))
 	//reply
 	/*
 		+----+--------+
@@ -163,7 +163,11 @@ func HandleConn(conn net.Conn) {
 		 | 1 | 1 |
 		 +----+--------+
 	*/
-	//认证方法
+	b := make([]byte, 0)
+	//VER
+	b = append(b, byte(5))
+	//authentication
+	//METHOD
 	for _, v := range methods {
 		if v == 0 {
 			fmt.Println("NO AUTHEN")
@@ -172,6 +176,7 @@ func HandleConn(conn net.Conn) {
 			break
 		}
 		//GSSAPI
+		//TODO
 		if v == 1 {
 			fmt.Println("GSSAPI")
 			b = append(b, byte(255))
@@ -221,9 +226,7 @@ func HandleConn(conn net.Conn) {
 	if ver != VERSION {
 		return
 	}
-
 	var dstIP *net.IP
-	domain := ""
 	//address types
 	switch atyp {
 	case 1:
@@ -247,7 +250,7 @@ func HandleConn(conn net.Conn) {
 		if err != nil || n == 0 {
 			panic(err)
 		}
-		domain = string(hostBytes)
+		domain := string(hostBytes)
 		addrs, err := net.LookupHost(domain)
 		if err != nil {
 			panic(err)
@@ -272,7 +275,6 @@ func HandleConn(conn net.Conn) {
 		panic(err)
 	}
 	dstPort := bytes2int(dstPortBytes)
-
 	//reply
 	/*
 		+----+-----+-------+------+----------+----------+
@@ -378,9 +380,6 @@ func Server() {
 
 }
 
-func Client() {
-
-}
 func main() {
 	Server()
 }
