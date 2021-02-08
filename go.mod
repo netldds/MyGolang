@@ -7,6 +7,7 @@ require (
 	github.com/adjust/gocheck v0.0.0-20131111155431-fbc315b36e0e // indirect
 	github.com/adjust/rmq v0.0.0-20180801141010-150bed51c75f
 	github.com/adjust/uniuri v0.0.0-20130923163420-498743145e60 // indirect
+	github.com/armon/go-socks5 v0.0.0-20160902184237-e75332964ef5
 	github.com/cockroachdb/apd v1.1.0 // indirect
 	github.com/denisenkom/go-mssqldb v0.0.0-20190724012636-11b2859924c1 // indirect
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
